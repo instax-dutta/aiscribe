@@ -1,13 +1,23 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, EB_Garamond } from 'next/font/google';
 import './globals.css';
 
-// Specify only the weights we actually use — reduces font payload
+// Inter — body, navigation, captions, buttons (ElevenLabs body font)
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600'],
   display: 'swap',
   preload: true,
+  variable: '--font-inter',
+});
+
+// EB Garamond — editorial display serif (open-source substitute for Waldenburg Light)
+const ebGaramond = EB_Garamond({
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+  preload: true,
+  variable: '--font-display',
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
@@ -43,10 +53,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={`${inter.variable} ${ebGaramond.variable} ${inter.className}`}>
       <body>
-        {children}
-        {/* Polite aria-live region for toast / status announcements */}
+        <div id="app-root">
+          {children}
+        </div>
+        {/* Polite aria-live region for screen-reader announcements */}
         <div
           id="sr-announcer"
           aria-live="polite"

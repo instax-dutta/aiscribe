@@ -65,7 +65,7 @@ export default function Home() {
     (key: string) => {
       setUserApiKey(key);
       setModalOpen(false);
-      showToast('API key saved! You can now transcribe unlimited files.', 'success');
+      showToast('API key saved! Unlimited transcriptions unlocked.', 'success');
     },
     [setUserApiKey, showToast]
   );
@@ -77,33 +77,63 @@ export default function Home() {
 
   const handleResetFreeUsage = useCallback(() => {
     setFreeUsageCount(0);
-    showToast('Free usage counter reset to 0', 'info');
+    showToast('Free usage counter reset', 'info');
   }, [setFreeUsageCount, showToast]);
 
   return (
-    <div id="app-container">
+    <>
+      {/* Floating navbar */}
       <Header onSettingsClick={() => setDrawerOpen(true)} />
 
-      <FreeUsageBanner freeUsageCount={freeUsageCount} hasUserKey={!!userApiKey} />
+      <div id="app-container">
+        {/* Hero — editorial, ElevenLabs-inspired, no gradient text */}
+        <section className="hero" aria-label="Product introduction">
+          <div className="hero-eyebrow" aria-hidden="true">
+            <span className="hero-eyebrow-dot" />
+            Powered by Groq Whisper
+          </div>
+          <h1>
+            Transcribe audio.<br />
+            Instantly.
+          </h1>
+          <p className="hero-sub">
+            Drop any audio file and receive an accurate, AI-generated transcript in seconds.
+            Free to start — no account required.
+          </p>
+        </section>
 
-      <main>
-        <UploadCard
-          key={uploadKey}
-          onTranscribe={handleTranscribe}
-          onCancel={cancel}
-          isTranscribing={isTranscribing}
-          error={error}
-          elapsedSeconds={elapsedSeconds}
-          language={language}
-          onLanguageChange={setLanguage}
-          onFileChange={handleFileChange}
-        />
+        {/* Free usage meter */}
+        <FreeUsageBanner freeUsageCount={freeUsageCount} hasUserKey={!!userApiKey} />
 
-        {result && !isTranscribing && (
-          <TranscriptResult text={result.text} onClear={handleClear} />
-        )}
-      </main>
+        {/* Upload + Transcribe */}
+        <main>
+          <UploadCard
+            key={uploadKey}
+            onTranscribe={handleTranscribe}
+            onCancel={cancel}
+            isTranscribing={isTranscribing}
+            error={error}
+            elapsedSeconds={elapsedSeconds}
+            language={language}
+            onLanguageChange={setLanguage}
+            onFileChange={handleFileChange}
+          />
 
+          {result && !isTranscribing && (
+            <TranscriptResult text={result.text} onClear={handleClear} />
+          )}
+        </main>
+
+        {/* Footer */}
+        <footer className="app-footer" role="contentinfo">
+          Built with{' '}
+          <a href="https://groq.com" target="_blank" rel="noopener noreferrer">Groq</a>
+          {' '}·{' '}
+          <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer">Next.js</a>
+        </footer>
+      </div>
+
+      {/* Settings drawer */}
       <SettingsDrawer
         key={userApiKey || 'none'}
         open={drawerOpen}
@@ -122,13 +152,15 @@ export default function Home() {
         onResetFreeUsage={handleResetFreeUsage}
       />
 
+      {/* Upgrade modal */}
       <UpgradeModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onApiKeySave={handleApiKeySave}
       />
 
+      {/* Toast notifications */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
-    </div>
+    </>
   );
 }
