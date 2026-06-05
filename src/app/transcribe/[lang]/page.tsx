@@ -11,36 +11,111 @@ import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
 
-type Params = { lang: string };
+// Primary region code per language — drives the OG `locale` field.
+const REGION_BY_CODE: Record<string, string> = {
+  es: 'ES',
+  fr: 'FR',
+  de: 'DE',
+  pt: 'BR',
+  it: 'IT',
+  ja: 'JP',
+  ko: 'KR',
+  zh: 'CN',
+  hi: 'IN',
+  ar: 'SA',
+};
+
+type Params = Promise<{ lang: string }>;
 
 /** Pre-render every language page at build time */
-export function generateStaticParams(): Params[] {
+export function generateStaticParams(): { lang: string }[] {
   return getAllLanguageSlugs().map((lang) => ({ lang }));
 }
 
 /** Per-page metadata — unique title + description drives SERP CTR */
-export function generateMetadata({ params }: { params: Params }): Metadata {
-  const page = getLanguagePage(params.lang);
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { lang } = await params;
+  const page = getLanguagePage(lang);
   if (!page) return { title: 'Language not found' };
 
   const title = `Transcribe ${page.label} Audio to Text — Free & Instant | AiScribe`;
   const description = `Transcribe ${page.label} (${page.nativeName}) audio to text in seconds. Free to start, no account required. Whisper-powered, ${page.speakers.toLowerCase()}, ${ACCEPTED_EXTENSIONS.length} audio formats supported.`;
+  const url = `${BASE_URL}/transcribe/${page.slug}`;
+  const region = REGION_BY_CODE[page.code] ?? 'US';
+  const locale = `${page.code}_${region}`;
 
   return {
     title,
     description,
-    alternates: { canonical: `${BASE_URL}/transcribe/${page.slug}` },
+    authors: [{ name: 'SDAD', url: 'https://sdad.pro' }],
+    keywords: [
+      `${page.label} transcription`,
+      `${page.nativeName} audio to text`,
+      `transcribe ${page.label}`,
+      `${page.label} speech to text`,
+      `Whisper ${page.label}`,
+      `AI transcription ${page.label}`,
+      `free ${page.label} transcription`,
+    ],
+    alternates: { canonical: url },
     openGraph: {
       title,
       description,
       type: 'article',
-      url: `${BASE_URL}/transcribe/${page.slug}`,
+      url,
+      siteName: 'AiScribe',
+      locale,
+      determiner: '',
+      images: [
+        {
+          url: '/og.png',
+          secureUrl: `${BASE_URL}/og.png`,
+          width: 1200,
+          height: 630,
+          alt: `AiScribe — Transcribe ${page.label} audio to text. Powered by Groq Whisper.`,
+          type: 'image/png',
+        },
+      ],
+      publishedTime: '2026-06-05T00:00:00Z',
+      modifiedTime: '2026-06-05T00:00:00Z',
+      authors: ['SDAD'],
+      section: 'AI Transcription',
+      tags: [
+        page.label,
+        page.nativeName,
+        'transcription',
+        'speech-to-text',
+        'Whisper',
+        'Groq',
+        'AI',
+        'multilingual',
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: {
+        url: '/og.png',
+        alt: `AiScribe — Transcribe ${page.label} audio to text`,
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
 
-export default function LanguageTranscribePage({ params }: { params: Params }) {
-  const page = getLanguagePage(params.lang);
+export default async function LanguageTranscribePage({ params }: { params: Params }) {
+  const { lang } = await params;
+  const page = getLanguagePage(lang);
   if (!page) notFound();
 
   const related = getRelatedLanguagePages(page.slug);
