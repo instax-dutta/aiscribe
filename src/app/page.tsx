@@ -86,12 +86,8 @@ export default function Home() {
       <Header onSettingsClick={() => setDrawerOpen(true)} />
 
       <div id="app-container">
-        {/* Hero — editorial, no gradient text */}
+        {/* Hero — editorial, left-aligned, no eyebrow */}
         <section className="hero" aria-label="Product introduction">
-          <div className="hero-eyebrow" aria-hidden="true">
-            <span className="hero-eyebrow-dot" />
-            Powered by Groq
-          </div>
           <h1>
             Transcribe audio.<br />
             Instantly.
