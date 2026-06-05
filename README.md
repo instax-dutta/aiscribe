@@ -1,6 +1,8 @@
 # 🎙️ AiScribe — AI Audio Transcription
 
-Transcribe audio files instantly using AI. Free to start, no account needed. Powered by [Groq Whisper](https://groq.com).
+Transcribe audio files instantly using AI. Free to start, no account needed.
+
+> **Powered by** [Groq](https://groq.com) · **Built by** [SDAD](https://sdad.pro) 🧠
 
 ## Features
 
@@ -12,6 +14,7 @@ Transcribe audio files instantly using AI. Free to start, no account needed. Pow
 - **Export** — copy to clipboard, download as `.txt` or `.srt`
 - **Cancellable** — abort a long transcription mid-flight
 - **Secure by default** — hardened API proxy with rate limiting, input validation, and security headers
+- **Balanced smooth scroll** — powered by [Lenis](https://lenis.darkroom.engineering) with reduced-motion support
 
 ## Tech Stack
 
@@ -20,8 +23,9 @@ Transcribe audio files instantly using AI. Free to start, no account needed. Pow
 | Framework | [Next.js 16](https://nextjs.org) (App Router) |
 | Language | TypeScript 5 |
 | Styling | Vanilla CSS (dark mode, glassmorphism) |
-| AI | [Groq Whisper](https://console.groq.com) via API |
-| Deployment | [Vercel](https://vercel.com) |
+| Scroll | [Lenis](https://lenis.darkroom.engineering) (balanced config) |
+| AI inference | [Groq Whisper](https://console.groq.com) via secure API |
+| Crafted by | [SDAD](https://sdad.pro) 🧠 |
 
 ## Getting Started
 

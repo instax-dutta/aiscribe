@@ -1,7 +1,7 @@
 /* ─── Reset ─────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── Design Tokens (ElevenLabs dark inversion) ─────────────────────────── */
+/* ─── Design Tokens (dark editorial inversion) ─────────────────────────── */
 :root {
   /* Canvas — pure dark, not blue */
   --canvas:           #0c0a09;
@@ -21,12 +21,12 @@
   --muted:            #77716a;
   --muted-soft:       #524e4a;
 
-  /* Buttons (inverted EL pill — now white pill on dark) */
+  /* Buttons (inverted pill — white pill on dark) */
   --btn-bg:           #f5f5f0;
   --btn-text:         #0c0a09;
   --btn-bg-active:    #ffffff;
 
-  /* Atmospheric gradient orbs — ElevenLabs signature */
+  /* Atmospheric gradient orbs — signature */
   --orb-mint:         #a7e5d3;
   --orb-peach:        #f4c5a8;
   --orb-lavender:     #c8b8e0;
@@ -56,6 +56,12 @@
   --sp-xxl:   48px;
   --sp-section: 80px;
 
+  /* Layout — fluid container width, capped on large viewports */
+  --container-max:   720px;
+  --container-pad:   clamp(16px, 4vw, 32px);
+  --nav-offset:      clamp(12px, 2vw, 20px);
+  --nav-bottom-gap:  clamp(28px, 5vw, 56px);
+
   /* Motion */
   --ease:  cubic-bezier(0.22, 1, 0.36, 1);
   --t-fast: color 150ms ease, background-color 150ms ease, border-color 150ms ease, opacity 150ms ease;
@@ -71,10 +77,17 @@
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Lenis owns the wheel; let native handle anchor jumps */
   color-scheme: dark;
   font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
 
 body {
   background: var(--canvas);
@@ -87,6 +100,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
 /* ─── Atmospheric orb backdrop ──────────────────────────────────────────── */
@@ -110,14 +124,16 @@ body {
 }
 
 #app-root::before {
-  width: 700px; height: 700px;
+  width: min(700px, 110vw);
+  height: min(700px, 110vw);
   top: -220px; left: -180px;
   background: radial-gradient(circle at center, var(--orb-mint) 0%, var(--orb-lavender) 55%, transparent 75%);
   animation: orb-a 28s ease-in-out infinite;
 }
 
 #app-root::after {
-  width: 600px; height: 600px;
+  width: min(600px, 110vw);
+  height: min(600px, 110vw);
   bottom: -160px; right: -140px;
   background: radial-gradient(circle at center, var(--orb-peach) 0%, var(--orb-rose) 50%, transparent 72%);
   animation: orb-b 34s ease-in-out infinite;
@@ -160,27 +176,27 @@ body {
   position: relative;
   z-index: var(--z-base);
   width: 100%;
-  max-width: 680px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 24px 80px;
+  padding: 0 var(--container-pad) clamp(60px, 8vw, 80px);
 }
 
 /* ─── Floating Navbar ────────────────────────────────────────────────────── */
 .navbar {
   position: sticky;
-  top: 16px;
+  top: var(--nav-offset);
   z-index: var(--z-float);
-  max-width: 680px;
-  margin: 20px auto 48px;
-  padding: 0 24px;
+  max-width: var(--container-max);
+  margin: clamp(14px, 2vw, 20px) auto var(--nav-bottom-gap);
+  padding: 0 var(--container-pad);
 }
 
 .navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 52px;
-  padding: 0 18px;
+  height: clamp(48px, 5vw, 52px);
+  padding: 0 clamp(14px, 2vw, 18px);
   background: rgba(12, 10, 9, 0.82);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -1308,6 +1324,11 @@ audio#audio-preview {
 
 /* ─── Footer ─────────────────────────────────────────────────────────────── */
 .app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 10px;
   text-align: center;
   padding: var(--sp-xl) var(--sp-lg) var(--sp-xxl);
   font-size: 13px;
@@ -1316,7 +1337,10 @@ audio#audio-preview {
   color: var(--muted);
   border-top: 1px solid var(--hairline-soft);
   margin-top: var(--sp-xl);
+  line-height: 1.6;
 }
+
+.footer-line { display: inline-flex; align-items: center; gap: 4px; }
 
 .app-footer a {
   color: var(--body);
@@ -1328,22 +1352,150 @@ audio#audio-preview {
 
 .app-footer a:hover { color: var(--ink); border-color: rgba(255,255,255,0.3); }
 
-/* ─── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 640px) {
-  #app-container { padding: 0 16px 60px; }
-  .navbar        { padding: 0 16px; margin: 14px auto 36px; }
-  .card          { padding: var(--sp-lg); }
-  .hero h1       { letter-spacing: -0.6px; }
-  .controls-row  { flex-direction: column; }
-  .controls-row .select-wrap { width: 100%; }
-  .modal-panel   { padding: var(--sp-lg); border-radius: var(--r-xl); }
-  .drawer-panel  { max-width: 100%; }
-  .results-actions { width: 100%; }
-  .toast-container { left: 16px; right: 16px; top: 14px; }
-  .toast { max-width: 100%; }
+.footer-sdad {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-@media (max-width: 400px) {
-  .hero h1 { font-size: 28px; }
+.footer-brain {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1;
+  transform-origin: center;
+  animation: brain-think 4.2s ease-in-out infinite;
+  filter: saturate(1.1);
+}
+
+@keyframes brain-think {
+  0%, 100% { transform: rotate(0deg)   scale(1); }
+  35%      { transform: rotate(-6deg)  scale(1.06); }
+  65%      { transform: rotate(7deg)   scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-brain { animation: none; }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+/* Large screens — give the container a touch more breathing room */
+@media (min-width: 1024px) {
+  :root {
+    --container-max: 760px;
+    --container-pad: 40px;
+  }
+  .hero h1 { font-size: clamp(40px, 4.4vw, 60px); letter-spacing: -1.4px; }
+  .hero-sub { font-size: 17px; max-width: 440px; }
+}
+
+/* Tablets & small laptops */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .navbar-inner { height: 50px; }
+  .hero { padding-bottom: 40px; }
+  .hero h1 { font-size: 44px; }
+  .card { padding: 28px; }
+  .transcript-box { max-height: 420px; }
+}
+
+/* Phablets & small tablets */
+@media (max-width: 767px) {
+  .navbar-inner { height: 48px; padding: 0 14px; }
+  .nav-logo-icon { width: 26px; height: 26px; }
+  .nav-logo-icon svg { width: 14px; height: 14px; }
+  .nav-brand-name { font-size: 18px; }
+  .nav-badge { font-size: 9px; padding: 2px 6px; letter-spacing: 0.6px; }
+
+  .hero { padding-bottom: 32px; }
+  .hero h1 { letter-spacing: -0.8px; }
+  .hero-eyebrow { font-size: 11px; padding: 4px 12px; }
+
+  .card { padding: var(--sp-lg); }
+  .dropzone { padding: 36px 18px; }
+  .dropzone-icon { width: 40px; height: 40px; margin-bottom: 12px; }
+
+  .results-header { gap: 10px; }
+  .results-actions { width: 100%; }
+  .results-actions .btn-icon { flex: 1; justify-content: center; }
+
+  .transcript-box { max-height: 320px; padding: 16px; font-size: 14.5px; }
+
+  .controls-row { flex-direction: column; align-items: stretch; }
+  .controls-row .select-wrap { width: 100%; min-width: 0; }
+  .controls-row .btn-primary { width: 100%; }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .navbar { margin-bottom: 28px; }
+  .navbar-inner { height: 46px; padding: 0 12px; }
+  .nav-logo-icon { width: 24px; height: 24px; }
+  .nav-logo-icon svg { width: 13px; height: 13px; }
+  .nav-brand-name { font-size: 17px; }
+  .nav-badge { display: none; }
+
+  .hero { padding-bottom: 28px; }
+  .hero h1 { font-size: 30px; line-height: 1.1; letter-spacing: -0.5px; }
+  .hero-sub { font-size: 14.5px; line-height: 1.6; }
+
+  .usage-bar-wrap { padding: 9px 12px; gap: 10px; }
+  .usage-bar-label { font-size: 11.5px; }
+
+  .card { padding: 18px; border-radius: var(--r-lg); }
+  .dropzone { padding: 28px 14px; border-radius: var(--r-md); }
+  .dropzone-title { font-size: 14px; }
+  .dropzone-sub { font-size: 12px; }
+  .file-preview { padding: 10px 12px; gap: 10px; }
+  .file-icon-wrap { width: 32px; height: 32px; }
+  .file-name { font-size: 13px; }
+  .file-meta { font-size: 11.5px; }
+
+  .btn { height: 38px; padding: 0 16px; font-size: 14px; }
+  .btn-sm { height: 32px; padding: 0 12px; font-size: 12.5px; }
+  .btn-icon { height: 32px; padding: 0 10px; font-size: 12px; }
+
+  .waveform { height: 32px; gap: 2px; }
+  .waveform-bar { width: 1.5px; }
+
+  .results-stats { gap: 14px; font-size: 11px; }
+  .results-title h2 { font-size: 14px; }
+  .results-title-icon { width: 26px; height: 26px; }
+
+  .modal-panel { padding: 22px 18px; border-radius: var(--r-xl); }
+  .modal-panel h2 { font-size: 24px; }
+  .modal-icon { width: 40px; height: 40px; margin-bottom: 16px; }
+  .modal-icon svg { width: 20px; height: 20px; }
+  .modal-input-row { flex-direction: column; }
+  .modal-input-row .btn { width: 100%; }
+  .modal-input-row input { width: 100%; }
+  .modal-steps { padding: 14px; }
+  .modal-steps li { font-size: 12.5px; }
+
+  .toast-container { left: 12px; right: 12px; top: 12px; }
+  .toast { max-width: 100%; font-size: 12.5px; padding: 11px 14px; }
+
+  .app-footer { font-size: 12px; gap: 4px 8px; padding: 28px 12px 40px; }
+
+  /* Tame the orbs on small screens — they get noisy */
+  #app-root::before, #app-root::after { opacity: 0.12; }
+}
+
+/* Tiny phones (iPhone SE / 320px) */
+@media (max-width: 360px) {
+  .hero h1 { font-size: 26px; }
+  .hero-sub { font-size: 13.5px; }
+  .hero-eyebrow { font-size: 10.5px; padding: 3px 10px; letter-spacing: 0.7px; }
+  .results-actions .btn-icon { font-size: 11.5px; padding: 0 8px; }
+  .results-actions .btn-icon svg { width: 12px; height: 12px; }
   .model-toggle-group { gap: 6px; }
+  .model-toggle-btn { padding: 10px 12px; }
+  .model-toggle-btn .model-name { font-size: 13px; }
+  .model-toggle-btn .model-desc { font-size: 11.5px; }
+}
+
+/* Tall but narrow viewports — give footer room */
+@media (max-height: 600px) and (orientation: landscape) {
+  .hero { padding-bottom: 20px; }
+  .hero h1 { font-size: 28px; }
+  .navbar { margin-bottom: 20px; }
 }

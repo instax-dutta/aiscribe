@@ -86,11 +86,11 @@ export default function Home() {
       <Header onSettingsClick={() => setDrawerOpen(true)} />
 
       <div id="app-container">
-        {/* Hero — editorial, ElevenLabs-inspired, no gradient text */}
+        {/* Hero — editorial, no gradient text */}
         <section className="hero" aria-label="Product introduction">
           <div className="hero-eyebrow" aria-hidden="true">
             <span className="hero-eyebrow-dot" />
-            Powered by Groq Whisper
+            Powered by Groq
           </div>
           <h1>
             Transcribe audio.<br />
@@ -124,12 +124,32 @@ export default function Home() {
           )}
         </main>
 
-        {/* Footer */}
+        {/* Footer — Powered by Groq · Built by SDAD */}
         <footer className="app-footer" role="contentinfo">
-          Built with{' '}
-          <a href="https://groq.com" target="_blank" rel="noopener noreferrer">Groq</a>
-          {' '}·{' '}
-          <a href="https://nextjs.org" target="_blank" rel="noopener noreferrer">Next.js</a>
+          <span className="footer-line">
+            Powered by{' '}
+            <a
+              href="https://groq.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Powered by Groq"
+            >
+              Groq
+            </a>
+          </span>
+          <span className="footer-sep" aria-hidden="true">·</span>
+          <span className="footer-line">
+            Built by{' '}
+            <a
+              href="https://sdad.pro"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-sdad"
+              aria-label="Built by SDAD — opens in a new tab"
+            >
+              SDAD <span className="footer-brain" aria-hidden="true">🧠</span>
+            </a>
+          </span>
         </footer>
       </div>
 
