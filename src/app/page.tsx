@@ -1,6 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import FreeUsageBanner from '@/components/FreeUsageBanner';
 import UploadCard from '@/components/UploadCard';
@@ -11,8 +13,18 @@ import ToastContainer from '@/components/ToastContainer';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useTranscribe } from '@/hooks/useTranscribe';
 import { useToast } from '@/hooks/useToast';
+import { LANGUAGES } from '@/lib/constants';
 
 export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeInner />
+    </Suspense>
+  );
+}
+
+function HomeInner() {
+  const searchParams = useSearchParams();
   const [freeUsageCount, setFreeUsageCount] = useLocalStorage('freeUsageCount', 0);
   const [userApiKey, setUserApiKey] = useLocalStorage<string | null>('groq_user_api_key', null);
   const [model, setModel] = useLocalStorage('selectedModel', 'whisper-large-v3-turbo');
@@ -25,6 +37,17 @@ export default function Home() {
 
   const { isTranscribing, error, result, elapsedSeconds, transcribe, cancel, reset: resetTranscribe } = useTranscribe();
   const { toasts, showToast, dismissToast } = useToast();
+
+  // pSEO deep-link: /?lang=es pre-selects the Spanish language dropdown.
+  // Validates against the allowlist; only persists if the code is recognized.
+  useEffect(() => {
+    const requested = searchParams.get('lang');
+    if (!requested) return;
+    const isValid = LANGUAGES.some((l) => l.value === requested);
+    if (isValid && requested !== language) {
+      setLanguage(requested);
+    }
+  }, [searchParams, language, setLanguage]);
 
   const handleTranscribe = useCallback(async () => {
     const file = fileRef.current;
@@ -122,6 +145,12 @@ export default function Home() {
 
         {/* Footer — Powered by Groq · Built by SDAD */}
         <footer className="app-footer" role="contentinfo">
+          <span className="footer-line">
+            <Link href="/transcribe" aria-label="Browse transcription by language">
+              Languages
+            </Link>
+          </span>
+          <span className="footer-sep" aria-hidden="true">·</span>
           <span className="footer-line">
             Powered by{' '}
             <a
