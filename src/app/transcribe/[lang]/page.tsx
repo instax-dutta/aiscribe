@@ -68,6 +68,36 @@ export default function LanguageTranscribePage({ params }: { params: Params }) {
     ],
   };
 
+  // JSON-LD: Article schema for AI engines. Provides author, publisher,
+  // datePublished, and dateModified — the four signals AI systems use
+  // to weight freshness and authority.
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: `Transcribe ${page.label} audio to text`,
+    description: page.intro,
+    inLanguage: page.code,
+    author: { '@type': 'Organization', name: 'SDAD', url: 'https://sdad.pro' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AiScribe',
+      url: BASE_URL,
+    },
+    datePublished: '2026-06-05',
+    dateModified: '2026-06-05',
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${BASE_URL}/transcribe/${page.slug}`,
+    },
+    keywords: [
+      `transcribe ${page.label.toLowerCase()} audio`,
+      `${page.label.toLowerCase()} audio to text`,
+      `${page.label.toLowerCase()} transcription`,
+      `${page.label.toLowerCase()} speech to text`,
+      `whisper ${page.label.toLowerCase()}`,
+    ],
+  };
+
   return (
     <>
       <MarketingHeader />
@@ -91,6 +121,9 @@ export default function LanguageTranscribePage({ params }: { params: Params }) {
           </div>
           <h1>Transcribe {page.label} audio to text</h1>
           <p className="hero-sub">{page.intro}</p>
+          <p className="pseo-freshness" aria-label="Last updated">
+            <time dateTime="2026-06-05">Last updated: 5 June 2026</time>
+          </p>
         </section>
 
         <main>
@@ -222,6 +255,10 @@ export default function LanguageTranscribePage({ params }: { params: Params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
     </>
   );

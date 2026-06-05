@@ -271,25 +271,25 @@ body {
 
 /* ─── Hero Section ───────────────────────────────────────────────────────── */
 .hero {
-  text-align: left;
-  padding: clamp(20px, 4vw, 32px) 0 clamp(28px, 5vw, 48px);
+  text-align: center;
+  padding: clamp(28px, 5vw, 48px) 0 clamp(32px, 6vw, 56px);
   position: relative;
-  max-width: 600px;
+  width: 100%;
 }
 
-/* Subtle mid-page atmospheric glow — sits to the right of left-aligned copy,
-   acts as a soft chapter-mark in the negative space */
+/* Subtle mid-page atmospheric glow — centered behind the title */
 .hero::before {
   content: '';
   position: absolute;
-  width: min(420px, 70vw);
-  height: 260px;
-  top: -40px;
-  right: -10%;
-  background: radial-gradient(ellipse at center, rgba(200,184,224,0.13) 0%, rgba(167,229,211,0.06) 40%, transparent 72%);
+  width: min(560px, 90vw);
+  height: 300px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(200,184,224,0.14) 0%, rgba(167,229,211,0.06) 45%, transparent 72%);
   pointer-events: none;
   z-index: 0;
-  filter: blur(20px);
+  filter: blur(28px);
 }
 
 .hero h1 {
@@ -301,18 +301,20 @@ body {
   line-height: 1.06;
   letter-spacing: -1.3px;
   color: var(--ink);
-  margin-bottom: clamp(14px, 2vw, 18px);
+  margin: 0 auto clamp(14px, 2vw, 18px);
+  max-width: 14ch;
   text-wrap: balance;
 }
 
 .hero-sub {
   position: relative;
   z-index: 1;
-  font-size: clamp(15px, 1.6vw, 16px);
+  font-size: clamp(15px, 1.6vw, 16.5px);
   font-weight: 400;
   letter-spacing: 0.16px;
   color: var(--body);
-  max-width: 440px;
+  max-width: 46ch;
+  margin: 0 auto;
   line-height: 1.65;
   text-wrap: pretty;
 }
@@ -1509,6 +1511,18 @@ audio#audio-preview {
   text-transform: none;
   font-family: var(--font-inter), sans-serif;
 }
+
+.pseo-freshness {
+  position: relative;
+  z-index: 1;
+  margin-top: 16px;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted-soft);
+}
+.pseo-freshness time { color: var(--muted); }
 .hero-eyebrow-native {
   font-family: var(--font-display, 'EB Garamond', serif);
   font-size: 18px;

@@ -1,0 +1,63 @@
+# AiScribe — robots.txt
+# https://aiscribe.vercel.app
+#
+# Policy: allow all legitimate crawlers, including AI search-and-cite bots.
+# AiScribe is a public transcription tool and we want our language pages
+# to be discoverable by AI assistants so they can cite us.
+#
+# What we allow:
+#   - Traditional search: Googlebot, Bingbot, DuckDuckBot, etc.
+#   - AI search-and-cite:  GPTBot, ChatGPT-User, ClaudeBot, anthropic-ai,
+#                          PerplexityBot, Google-Extended, Applebot-Extended
+#
+# What we block:
+#   - /api/transcribe  (internal endpoint, not for public indexation)
+#   - Common Crawl bot (CCBot) — used for training datasets; we don't
+#     consent to having our pages scraped for model training. Search-and-
+#     cite bots above are still welcome.
+
+User-agent: *
+Allow: /
+
+# Block the server-side transcription proxy
+Disallow: /api/
+
+# AI search-and-cite bots — explicit allow (these are not the default
+# behaviour of every bot, so we list them for clarity)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Common Crawl — used to train foundation models. We allow search-and-cite
+# above but do not consent to wholesale model-training scraping.
+User-agent: CCBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://aiscribe.vercel.app/sitemap.xml

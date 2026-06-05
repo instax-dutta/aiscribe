@@ -206,6 +206,54 @@ function HomeInner() {
 
       {/* Toast notifications */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
+
+      {/* Structured data: WebApplication schema for AI engines + Google Rich Results.
+          Helps non-Google AI engines (ChatGPT, Perplexity, Claude) extract product
+          info, pricing, supported formats, and language list as machine-readable
+          context when users ask about audio transcription tools. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'AiScribe',
+            url: 'https://aiscribe.vercel.app',
+            applicationCategory: 'MultimediaApplication',
+            applicationSubCategory: 'Speech-to-Text Transcription',
+            operatingSystem: 'Web (any modern browser)',
+            description:
+              'Free, instant AI audio transcription powered by Groq Whisper. Supports 15 languages. No account required for 5 free transcriptions; bring your own Groq API key for unlimited.',
+            inLanguage: ['en', 'es', 'fr', 'de', 'pt', 'it', 'ja', 'ko', 'zh', 'hi', 'ar', 'ru', 'nl', 'tr', 'pl'],
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
+              description:
+                '5 free transcriptions with no account. Unlimited with a user-supplied Groq API key (free from Groq).',
+            },
+            featureList: [
+              'Drag-and-drop audio upload',
+              '15 supported languages with auto-detect',
+              'Two Whisper models: turbo (fast) and large-v3 (accurate)',
+              'Export as TXT or SRT',
+              'Cancellable mid-transcription',
+              'Local-storage only API key handling — never sent to our server',
+            ],
+            aggregateRating: undefined,
+            author: {
+              '@type': 'Organization',
+              name: 'SDAD',
+              url: 'https://sdad.pro',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Groq',
+              url: 'https://groq.com',
+            },
+          }),
+        }}
+      />
     </>
   );
 }
