@@ -7,6 +7,7 @@ import { formatFileSize, formatDuration } from '@/lib/utils';
 
 interface UploadCardProps {
   onTranscribe: () => void;
+  onCancel: () => void;
   isTranscribing: boolean;
   error: string | null;
   elapsedSeconds: number;
@@ -18,6 +19,7 @@ interface UploadCardProps {
 
 export default function UploadCard({
   onTranscribe,
+  onCancel,
   isTranscribing,
   error,
   elapsedSeconds,
@@ -148,6 +150,15 @@ export default function UploadCard({
           <p className="loading-text">
             Transcribing... <span className="elapsed">{elapsedSeconds}s</span>
           </p>
+          <button
+            type="button"
+            className="btn btn-outline btn-sm"
+            style={{ marginTop: 12 }}
+            onClick={onCancel}
+            aria-label="Cancel transcription"
+          >
+            Cancel
+          </button>
         </div>
       )}
 

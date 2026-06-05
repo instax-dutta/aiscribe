@@ -31,7 +31,7 @@ export function useLocalStorage<T>(key: string, defaultValue: T) {
   const setValue = useCallback(
     (value: T | ((prev: T) => T)) => {
       setStoredValue((prev) => {
-        const next = value instanceof Function ? value(prev) : value;
+        const next = typeof value === 'function' ? (value as (prev: T) => T)(prev) : value;
         safeSet(key, next);
         return next;
       });

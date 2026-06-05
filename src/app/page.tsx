@@ -23,7 +23,7 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [uploadKey, setUploadKey] = useState(0);
 
-  const { isTranscribing, error, result, elapsedSeconds, transcribe, reset: resetTranscribe } = useTranscribe();
+  const { isTranscribing, error, result, elapsedSeconds, transcribe, cancel, reset: resetTranscribe } = useTranscribe();
   const { toasts, showToast, dismissToast } = useToast();
 
   const handleTranscribe = useCallback(async () => {
@@ -90,6 +90,7 @@ export default function Home() {
         <UploadCard
           key={uploadKey}
           onTranscribe={handleTranscribe}
+          onCancel={cancel}
           isTranscribing={isTranscribing}
           error={error}
           elapsedSeconds={elapsedSeconds}
