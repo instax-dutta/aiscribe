@@ -9,7 +9,7 @@ import {
 } from '@/lib/languagePages';
 import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://ais.sdad.pro';
 
 // Primary region code per language — drives the OG `locale` field.
 const REGION_BY_CODE: Record<string, string> = {

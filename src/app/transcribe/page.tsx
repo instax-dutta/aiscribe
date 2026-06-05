@@ -4,7 +4,7 @@ import MarketingHeader from '@/components/MarketingHeader';
 import { LANGUAGE_PAGES } from '@/lib/languagePages';
 import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://ais.sdad.pro';
 
 export const metadata: Metadata = {
   title: 'Transcribe Audio in 10 Languages — Free & Instant | AiScribe',

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { LANGUAGE_PAGES } from '@/lib/languagePages';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://ais.sdad.pro';
 
 /**
  * Dynamic sitemap — Next.js will serve this at /sitemap.xml.

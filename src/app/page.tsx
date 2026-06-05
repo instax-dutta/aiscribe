@@ -218,7 +218,7 @@ function HomeInner() {
             '@context': 'https://schema.org',
             '@type': 'WebApplication',
             name: 'AiScribe',
-            url: 'https://aiscribe.vercel.app',
+            url: 'https://ais.sdad.pro',
             applicationCategory: 'MultimediaApplication',
             applicationSubCategory: 'Speech-to-Text Transcription',
             operatingSystem: 'Web (any modern browser)',

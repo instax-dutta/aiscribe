@@ -21,7 +21,7 @@ const ebGaramond = EB_Garamond({
   variable: '--font-display',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://aiscribe.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://ais.sdad.pro';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
